@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Snackbar from '@mui/material/Snackbar';
 import { SERVER_URL } from "../constants";
+import AddCar from './AddCar';
 
 function Carlist() {
   const [cars, setCars] = useState([]);
@@ -13,6 +14,24 @@ function Carlist() {
       .then((data) => setCars(data._embedded.cars))
       .catch((error) => console.error("Error fetching car data:", error));
   };
+
+
+    //Add a new car
+    const addCar = (car) => {
+        fetch(`${SERVER_URL}api/cars`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(car)
+        })
+        .then(response => {
+            if (response.ok) {
+                fetchCars();
+            } else {
+                alert('Something went wrong in adding a car');
+            }
+        })
+        .catch(err => console.error(err));
+    }
 
   useEffect(() => {
     fetchCars();
@@ -52,6 +71,8 @@ function Carlist() {
   ];
 
   return (
+    <React.Fragment>
+      <AddCar addCar={addCar} />
     <div style={{ height: 500, width: "100%" }}>
       <DataGrid
         rows={cars}
@@ -68,6 +89,7 @@ function Carlist() {
       message="Car deleted successfully"
     />
     </div>
+    </React.Fragment>
   );
 }
 
