@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Snackbar from '@mui/material/Snackbar';
 import { SERVER_URL } from "../constants";
 import AddCar from './AddCar';
+import EditCar from './EditCar';
 
 function Carlist() {
   const [cars, setCars] = useState([]);
@@ -52,6 +53,23 @@ function Carlist() {
     }
   };
 
+  const updateCar = (car, link) => {
+    console.log(link);
+    fetch(link, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(car),
+    })
+      .then((response) => {
+        if (response.ok) {
+          fetchCars();
+        } else {
+          alert("Something went wrong in updating the car");
+        }
+      })
+      .catch((err) => console.error(err));
+  }
+
   const columns = [
     { field: "brand", headerName: "Brand", width: 200 },
     { field: "model", headerName: "Model", width: 200 },
@@ -59,13 +77,24 @@ function Carlist() {
     { field: "year", headerName: "Year", width: 120 },
     { field: "price", headerName: "Price", width: 120 },
     {
-      field: "actions",
+      field: '_links.car.href',
       headerName: "",
       sortable: false,
       filterable: false,
       width: 120,
-      renderCell: (params) => (
-        <button onClick={() => onDelClick(params.id)}>Delete</button>
+      renderCell: (row) => (
+        <EditCar data={row} updateCar={updateCar}  />
+      ),
+
+    },
+    {
+      field: '_links.self.href',
+      headerName: "",
+      sortable: false,
+      filterable: false,
+      width: 120,
+      renderCell: (row) => (
+        <button onClick={() => onDelClick(row.id)}>Delete</button>
       ),
     },
   ];
