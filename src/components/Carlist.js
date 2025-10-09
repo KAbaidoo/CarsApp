@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarExportContainer, gridClasses } from "@mui/x-data-grid";
 import Snackbar from '@mui/material/Snackbar';
 import { SERVER_URL } from "../constants";
 import AddCar from './AddCar';
 import EditCar from './EditCar';
+
 
 function Carlist() {
   const [cars, setCars] = useState([]);
@@ -110,6 +111,7 @@ function Carlist() {
         disableRowSelectionOnClick={true}
         pageSize={10}
         rowsPerPageOptions={[5, 10]}
+        showToolbar
       />
       <Snackbar
       open={open}
