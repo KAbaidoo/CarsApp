@@ -4,6 +4,9 @@ import Snackbar from '@mui/material/Snackbar';
 import { SERVER_URL } from "../constants";
 import AddCar from './AddCar';
 import EditCar from './EditCar';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function Carlist() {
@@ -95,14 +98,18 @@ function Carlist() {
       filterable: false,
       width: 120,
       renderCell: (row) => (
-        <button onClick={() => onDelClick(row.id)}>Delete</button>
+        <IconButton onClick={() => onDelClick(row.id)}>
+          <DeleteIcon color="error"/>
+        </IconButton>
       ),
     },
   ];
 
   return (
     <React.Fragment>
+      <Stack mt={2} mb={2} direction="row" spacing={2} justifyContent="center">
       <AddCar addCar={addCar} />
+    </Stack>
     <div style={{ height: 500, width: "100%" }}>
       <DataGrid
         rows={cars}
