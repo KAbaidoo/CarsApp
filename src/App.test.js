@@ -1,8 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('open add car dialog', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const addButton = screen.getByText(/Add Car/i);
+  fireEvent.click(addButton);
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toHaveTextContent(/Add New Car/i);
 });

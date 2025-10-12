@@ -33,7 +33,7 @@ function EditCar(props) {
 
   return (
     <div>
-     <IconButton onClick={handleClickOpen}><EditIcon color='primary' /></IconButton>
+     <IconButton onClick={handleClickOpen}><EditIcon color='' /></IconButton>
      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Car</DialogTitle>
         <DialogContent>
