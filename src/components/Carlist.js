@@ -14,7 +14,14 @@ function Carlist() {
   const [open, setOpen] = useState(false);
 
   const fetchCars = () => {
-    fetch(`${SERVER_URL}api/cars`)
+    //Read the token from session storage
+    const token = sessionStorage.getItem("jwt");
+
+    fetch(`${SERVER_URL}api/cars`, {
+      headers: {
+        Authorization: token
+      }
+    })
       .then((response) => response.json())
       .then((data) => setCars(data._embedded.cars))
       .catch((error) => console.error("Error fetching car data:", error));
@@ -23,9 +30,14 @@ function Carlist() {
 
     //Add a new car
     const addCar = (car) => {
+      //Read the token from session storage
+    const token = sessionStorage.getItem("jwt");
         fetch(`${SERVER_URL}api/cars`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: token
+            },
             body: JSON.stringify(car)
         })
         .then(response => {
@@ -43,8 +55,10 @@ function Carlist() {
   }, []);
 
   const onDelClick = (url) => {
+    //Read the token from session storage
+    const token = sessionStorage.getItem("jwt");
     if (window.confirm("Are you sure?")) {
-      fetch(url, { method: "DELETE" })
+      fetch(url, { method: "DELETE", headers: { Authorization: token } })
         .then((response) => {
           if (response.ok) {
             fetchCars();
@@ -58,10 +72,11 @@ function Carlist() {
   };
 
   const updateCar = (car, link) => {
-    console.log(link);
+//Read the token from session storage
+    const token = sessionStorage.getItem("jwt");
     fetch(link, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: token },
       body: JSON.stringify(car),
     })
       .then((response) => {

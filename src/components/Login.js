@@ -25,6 +25,9 @@ function Login() {
     })
       .then((response) => {
         if (response.ok) {
+          const token = response.headers.get("Authorization");
+          //Save the token to session storage
+          sessionStorage.setItem("jwt", token);
           setIsAuthenticated(true);
           alert("Login successful");
         } else {
